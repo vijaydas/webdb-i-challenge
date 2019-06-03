@@ -24,6 +24,35 @@ server.get("/", (req, res) => {
       });
   });
   
-  
+  server.get('/:id', (req, res) => {
+      const id = req.params.id;
+
+      accountsdb.add
+      .findById(id)
+      .then( account => {
+          res.status(200).json(account)
+      })
+      .catch(error => {
+          res.status(500).json({ error: "There was an error in finding that id"})
+      })
+
+  }) 
+
+  server.post('/', (req, res) => {
+    // const newAccount = req.body;
+    // console.log(newAccount)
+
+    accountsdb
+    .add(req.body)
+    .then( account => {
+        res.status(200).json(account)
+    })
+    .catch(error => {
+        res.status(500).json({ error: "There was an error in add that account"})
+    })
+
+}) 
+
+
 
 module.exports = server;
