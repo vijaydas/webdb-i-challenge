@@ -6,21 +6,15 @@ server.use(express.json());
 
 
 // your code here
-
-
 server.get("/", (req, res) => {
     accountsdb
       .find()
       .then(accounts => {
-        res.status(201).json({
-          accounts
-        });
+        res.status(200).json({ message: "accounts recieved", accounts });
       })
-      .catch(err => {
-        res.status(500).json({
-          error: err,
-          message: "no accounts"
-        });
+      .catch(error => {
+        console.log(error);
+        res.status(500).json({ message: "could not get accounts" });
       });
   });
   
@@ -39,19 +33,34 @@ server.get("/", (req, res) => {
   }) 
 
   server.post('/', (req, res) => {
-    // const newAccount = req.body;
-    // console.log(newAccount)
-
-    accountsdb
-    .add(req.body)
+ //   const newAccount = { name, budget } = req.body
+     accountsdb.add(req.body)
     .then( account => {
-        res.status(200).json(account)
+        res.status(201).json(account)
     })
     .catch(error => {
-        res.status(500).json({ error: "There was an error in add that account"})
+        res.status(500).json({ error: "That's an error posting." })
+    })
+})
+
+
+server.delete('/:id', (req, res) => {
+    //   const newAccount = { name, budget } = req.body
+    accountsdb
+    .remove(req.params.id,req.body)
+    .then(account => {
+      res.status(201).json(account);
     })
 
-}) 
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ message: "could not update account" });
+    });
+});
+
+server.put('/:id', (req, res) => {
+
+})   
 
 
 
